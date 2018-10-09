@@ -81,7 +81,6 @@ public class QrCodeService {
             }
         } catch (IOException e) {
             logger.warn("获取付款码异常,请求报文是[{}],异常信息是[{}]", reqStr, e.getMessage());
-            e.printStackTrace();
         }
         return result;
     }
@@ -131,7 +130,6 @@ public class QrCodeService {
             }
         } catch (IOException e) {
             logger.warn("交易状态查询异常,请求报文是[{}],异常信息是[{}]", reqStr, e.getMessage());
-            e.printStackTrace();
         }
         return result;
     }
