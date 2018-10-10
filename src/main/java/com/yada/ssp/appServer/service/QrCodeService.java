@@ -1,8 +1,8 @@
 package com.yada.ssp.appServer.service;
 
-import com.yada.sdk.net.TcpClient;
 import com.yada.ssp.appServer.model.UserInfo;
 import com.yada.ssp.appServer.model.UserInfoPK;
+import com.yada.ssp.appServer.net.SspClient;
 import com.yada.ssp.appServer.util.AmountUtil;
 import com.yada.ssp.appServer.util.TlvPacker;
 import org.slf4j.Logger;
@@ -22,12 +22,12 @@ public class QrCodeService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final UserInfoService userInfoService;
-    private final TcpClient tcpClient;
+    private final SspClient sspClient;
 
     @Autowired
-    public QrCodeService(UserInfoService userInfoService, TcpClient tcpClient) {
+    public QrCodeService(UserInfoService userInfoService, SspClient sspClient) {
         this.userInfoService = userInfoService;
-        this.tcpClient = tcpClient;
+        this.sspClient = sspClient;
     }
 
     public Map<String, String> getQrCode(String amt, UserInfoPK id) {
@@ -62,11 +62,10 @@ public class QrCodeService {
         reqMap.put("070", channel);
         String reqStr = TlvPacker.packer(reqMap);
         Map<String, String> result = new HashMap<>();
+
         try {
-            if (!tcpClient.isOpen())
-                tcpClient.open();
             // 发起生成二维码请求
-            ByteBuffer respBuffer = tcpClient.send(ByteBuffer.wrap(reqStr.getBytes()));
+            ByteBuffer respBuffer = sspClient.send(ByteBuffer.wrap(reqStr.getBytes()));
             Map<String, String> respMap = TlvPacker.unPacker(new String(respBuffer.array()));
             result.put("respCode", respMap.get("039"));
             result.put("respMsg", respMap.get("040"));
@@ -113,10 +112,8 @@ public class QrCodeService {
         String reqStr = TlvPacker.packer(reqMap);
         Map<String, String> result = new HashMap<>();
         try {
-            if (!tcpClient.isOpen())
-                tcpClient.open();
             // 发起交易查询请求
-            ByteBuffer respBuffer = tcpClient.send(ByteBuffer.wrap(reqStr.getBytes()));
+            ByteBuffer respBuffer = sspClient.send(ByteBuffer.wrap(reqStr.getBytes()));
             Map<String, String> respMap = TlvPacker.unPacker(new String(respBuffer.array()));
             result.put("respCode", respMap.get("039"));
             result.put("respMsg", respMap.get("040"));

@@ -8,8 +8,8 @@ import java.util.LinkedList;
 import java.util.Map;
 
 @Component
-@ConfigurationProperties(prefix = "tcp-client")
-public class TcpClientProperties {
+@ConfigurationProperties(prefix = "ssp-client")
+public class SspClientProperties {
 
     private String hostName;
     private int port;
