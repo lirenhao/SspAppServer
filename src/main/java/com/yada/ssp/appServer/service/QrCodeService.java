@@ -1,5 +1,6 @@
 package com.yada.ssp.appServer.service;
 
+import com.yada.ssp.appServer.config.QueryStatusProperties;
 import com.yada.ssp.appServer.model.UserInfo;
 import com.yada.ssp.appServer.model.UserInfoPK;
 import com.yada.ssp.appServer.net.SspClient;
@@ -23,11 +24,13 @@ public class QrCodeService {
 
     private final UserInfoService userInfoService;
     private final SspClient sspClient;
+    private final QueryStatusProperties queryStatusProperties;
 
     @Autowired
-    public QrCodeService(UserInfoService userInfoService, SspClient sspClient) {
+    public QrCodeService(UserInfoService userInfoService, SspClient sspClient, QueryStatusProperties queryStatusProperties) {
         this.userInfoService = userInfoService;
         this.sspClient = sspClient;
+        this.queryStatusProperties = queryStatusProperties;
     }
 
     public Map<String, String> getQrCode(String amt, UserInfoPK id) {
@@ -115,14 +118,17 @@ public class QrCodeService {
             // 发起交易查询请求
             ByteBuffer respBuffer = sspClient.send(ByteBuffer.wrap(reqStr.getBytes()));
             Map<String, String> respMap = TlvPacker.unPacker(new String(respBuffer.array()));
-            result.put("respCode", respMap.get("039"));
             result.put("respMsg", respMap.get("040"));
-            if ("00".equals(respMap.get("039"))) {
+            if (queryStatusProperties.getSuccess().contains(respMap.get("039"))) {
+                result.put("respCode", "success");
                 result.put("tranAmt", AmountUtil.parseToYuan(respMap.get("004")));
                 result.put("tranCry", respMap.get("018"));
                 result.put("tranNo", respMap.get("068"));
-            } else {
-                logger.warn("交易状态查询失败,返回码是[{}],提示信息是[{}],交易查询号是[{}]",
+            } else if (queryStatusProperties.getWaiting().contains(respMap.get("039"))) {
+                result.put("respCode", "waiting");
+            } else if (queryStatusProperties.getFailed().contains(respMap.get("039"))) {
+                result.put("respCode", "failed");
+                logger.warn("交易失败,返回码是[{}],提示信息是[{}],交易查询号是[{}]",
                         respMap.get("039"), respMap.get("040"), queryNo);
             }
         } catch (IOException e) {

@@ -2,7 +2,6 @@ package com.yada.ssp.appServer.net;
 
 import com.yada.sdk.net.IPackageSplitterFactory;
 import com.yada.sdk.net.TcpClient;
-import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,10 +25,10 @@ public class SspClient {
     public ByteBuffer send(ByteBuffer req) throws IOException {
         TcpClient client = new TcpClient(hostAddress, pkgSplitterFactory, timeout);
         try {
-            logger.info("send to Ssp: [{}]", Hex.encodeHexString(req.array()));
+            logger.info("send to Ssp: [{}]", new String(req.array()));
             client.open();
             ByteBuffer resp = client.send(req);
-            logger.info("resp from Ssp: [{}]", Hex.encodeHexString(resp.array()));
+            logger.info("resp from Ssp: [{}]", new String(resp.array()));
             return resp;
         } catch (IOException e) {
             logger.warn("[{}] has a error: [{}]", hostAddress.toString(), e);
