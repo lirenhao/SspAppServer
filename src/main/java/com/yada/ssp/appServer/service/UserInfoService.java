@@ -3,6 +3,8 @@ package com.yada.ssp.appServer.service;
 import com.yada.ssp.appServer.dao.UserInfoDao;
 import com.yada.ssp.appServer.model.UserInfo;
 import com.yada.ssp.appServer.model.UserInfoPK;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserInfoService {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     private final UserInfoDao userInfoDao;
     private final PasswordEncoder md5PasswordEncoder;
 
@@ -46,6 +49,7 @@ public class UserInfoService {
             userInfoDao.saveAndFlush(userInfo);
             return true;
         } else {
+            logger.warn("商户[{}]的[{}]用户修改密码时原密码错误", id.getMerNo(), id.getLoginName());
             return false;
         }
     }

@@ -67,6 +67,7 @@ public class QrCodeService {
         Map<String, String> result = new HashMap<>();
 
         try {
+            logger.info("获取付款码的请求报文是[{}]", reqStr);
             // 发起生成二维码请求
             ByteBuffer respBuffer = sspClient.send(ByteBuffer.wrap(reqStr.getBytes()));
             Map<String, String> respMap = TlvPacker.unPacker(new String(respBuffer.array()));
@@ -115,6 +116,7 @@ public class QrCodeService {
         String reqStr = TlvPacker.packer(reqMap);
         Map<String, String> result = new HashMap<>();
         try {
+            logger.info("交易状态查询的请求报文是[{}]", reqStr);
             // 发起交易查询请求
             ByteBuffer respBuffer = sspClient.send(ByteBuffer.wrap(reqStr.getBytes()));
             Map<String, String> respMap = TlvPacker.unPacker(new String(respBuffer.array()));

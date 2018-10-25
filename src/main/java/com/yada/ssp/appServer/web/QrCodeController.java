@@ -2,6 +2,8 @@ package com.yada.ssp.appServer.web;
 
 import com.yada.ssp.appServer.model.UserInfoPK;
 import com.yada.ssp.appServer.service.QrCodeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +17,7 @@ import java.util.Map;
 @Validated
 public class QrCodeController {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     private final QrCodeService qrCodeService;
 
     @Autowired
@@ -31,6 +34,7 @@ public class QrCodeController {
     @PostMapping(value = "/")
     public Map<String, String> create(OAuth2Authentication token, @NotEmpty String amt) {
         String[] id = token.getOAuth2Request().getClientId().split("@");
+        logger.info("商户[{}]的[{}]用户请求获取付款码", id[0], id[1]);
         return qrCodeService.getQrCode(amt, new UserInfoPK(id[0], id[1]));
     }
 
@@ -44,6 +48,7 @@ public class QrCodeController {
     @GetMapping(value = "/{queryNo}")
     public Map<String, String> query(OAuth2Authentication token, @PathVariable String queryNo) {
         String[] id = token.getOAuth2Request().getClientId().split("@");
+        logger.info("商户[{}]的[{}]用户请求查询付款码结果", id[0], id[1]);
         return qrCodeService.queryResult(queryNo, new UserInfoPK(id[0], id[1]));
     }
 }

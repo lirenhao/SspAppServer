@@ -4,6 +4,8 @@ import com.yada.ssp.appServer.model.UserInfo;
 import com.yada.ssp.appServer.model.UserInfoPK;
 import com.yada.ssp.appServer.service.DeviceService;
 import com.yada.ssp.appServer.service.UserInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +18,7 @@ import javax.validation.constraints.NotEmpty;
 @Validated
 public class UserController {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     private final UserInfoService userInfoService;
     private final DeviceService deviceService;
 
@@ -34,6 +37,7 @@ public class UserController {
     @GetMapping
     public UserInfo index(OAuth2Authentication token) {
         String[] id = token.getOAuth2Request().getClientId().split("@");
+        logger.info("商户[{}]的[{}]用户请求获取用户信息", id[0], id[1]);
         return userInfoService.getUserInfo(new UserInfoPK(id[0], id[1]));
     }
 
@@ -48,6 +52,7 @@ public class UserController {
     @PutMapping(value = "/updatePwd")
     public boolean updatePwd(OAuth2Authentication token, @NotEmpty String oldPwd, @NotEmpty String newPwd) {
         String[] id = token.getOAuth2Request().getClientId().split("@");
+        logger.info("商户[{}]的[{}]用户请求修改密码", id[0], id[1]);
         return userInfoService.updatePwd(new UserInfoPK(id[0], id[1]), oldPwd, newPwd);
     }
 
@@ -63,9 +68,11 @@ public class UserController {
     @PostMapping(value = "/bindPush")
     public UserInfo bindPush(OAuth2Authentication token, @NotEmpty String pushType, @NotEmpty String deviceNo, @NotEmpty String platform) {
         String[] id = token.getOAuth2Request().getClientId().split("@");
+        logger.info("商户[{}]的[{}]用户请求绑定推送", id[0], id[1]);
         if (deviceService.saveAndUpdate(id[0], id[1], pushType, deviceNo, platform) != null) {
             return userInfoService.getUserInfo(new UserInfoPK(id[0], id[1]));
         }
+        logger.warn("商户[{}]的[{}]用户请求绑定推送失败", id[0], id[1]);
         return null;
     }
 
@@ -77,6 +84,7 @@ public class UserController {
     @DeleteMapping(value = "/unBindPush")
     public boolean unBindPush(OAuth2Authentication token) {
         String[] id = token.getOAuth2Request().getClientId().split("@");
+        logger.info("商户[{}]的[{}]用户请求解绑推送", id[0], id[1]);
         deviceService.delete(new UserInfoPK(id[0], id[1]));
         return true;
     }
