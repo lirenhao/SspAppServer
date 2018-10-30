@@ -5,6 +5,7 @@ import com.yada.ssp.appServer.model.UserInfo;
 import com.yada.ssp.appServer.model.UserInfoPK;
 import com.yada.ssp.appServer.net.SspClient;
 import com.yada.ssp.appServer.util.AmountUtil;
+import com.yada.ssp.appServer.util.DateUtil;
 import com.yada.ssp.appServer.util.TlvPacker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,8 @@ public class QrCodeService {
 
     public Map<String, String> getQrCode(String amt, UserInfoPK id) {
         UserInfo userInfo = userInfoService.getUserInfo(id);
-        String termLsNo = String.valueOf(new Date().getTime());
+        // 终端流水号最大长度是6位,不同终端的流水号可以重复
+        String termLsNo = DateUtil.getCurTime();
         // 交易类型 动态二维码请求-01、交易渠道 目前默认填01
         return getQrCode("01", amt, termLsNo, userInfo.getCcyType().getCcyType(),
                 userInfo.getTermNo(), userInfo.getMerNo(), "01");
