@@ -34,13 +34,20 @@ public class QrCodeService {
         this.queryStatusProperties = queryStatusProperties;
     }
 
-    public Map<String, String> getQrCode(String amt, UserInfoPK id) {
+    /**
+     *
+     * @param amt 金额(单位:元)
+     * @param channel 交易渠道 01银联 02 CCPAY微信 03 CCPAY支付宝
+     * @param id
+     * @return
+     */
+    public Map<String, String> getQrCode(String amt, String channel, UserInfoPK id) {
         UserInfo userInfo = userInfoService.getUserInfo(id);
         // 终端流水号最大长度是6位,不同终端的流水号可以重复
         String termLsNo = DateUtil.getCurTime();
         // 交易类型 动态二维码请求-01、交易渠道 目前默认填01
         return getQrCode("01", amt, termLsNo, userInfo.getCcyType().getCcyType(),
-                userInfo.getTermNo(), userInfo.getMerNo(), "01");
+                userInfo.getTermNo(), userInfo.getMerNo(), channel);
     }
 
     /**

@@ -26,16 +26,18 @@ public class QrCodeController {
     }
 
     /**
-     * 获取用户二维码
+     * 获取用户付款码
      *
-     * @param token 授权信息
-     * @return 二维码的内容
+     * @param token   授权信息
+     * @param amt     金额(单位:元)
+     * @param channel 交易渠道 01银联 02 CCPAY微信 03 CCPAY支付宝
+     * @return 付款码的内容
      */
     @PostMapping(value = "/")
-    public Map<String, String> create(OAuth2Authentication token, @NotEmpty String amt) {
+    public Map<String, String> create(OAuth2Authentication token, @NotEmpty String amt, @NotEmpty String channel) {
         String[] id = token.getOAuth2Request().getClientId().split("@");
         logger.info("商户[{}]的[{}]用户请求获取付款码", id[0], id[1]);
-        return qrCodeService.getQrCode(amt, new UserInfoPK(id[0], id[1]));
+        return qrCodeService.getQrCode(amt, channel, new UserInfoPK(id[0], id[1]));
     }
 
     /**
