@@ -45,7 +45,7 @@ public class QrCodeServiceTest {
 
         Map<String, String> result2 = qrCodeService.getQrCode("01", "100",
                 "20181009095533001", "156", "78945612", "100000000000666", "01");
-        assertEquals(7, result2.size());
+        assertEquals(8, result2.size());
         assertEquals("00", result2.get("respCode"));
         assertEquals("Approved", result2.get("respMsg"));
         assertEquals("1.01", result2.get("tranAmt"));
@@ -53,6 +53,7 @@ public class QrCodeServiceTest {
         assertEquals("20181009182043000000007023", result2.get("queryNo"));
         assertEquals("0002010102121531104000441234567810000000000066652045411530315654041.015802CN5925Test Merchant 123456789016003BBM6106111   6228051200000000702307087894561263041006", result2.get("qrCode"));
         assertEquals("180", result2.get("timeout"));
+        assertEquals("01", result2.get("channel"));
 
         Map<String, String> result3 = qrCodeService.getQrCode("01", "100",
                 "20181009095533001", "156", "78945612", "100000000000666", "01");
