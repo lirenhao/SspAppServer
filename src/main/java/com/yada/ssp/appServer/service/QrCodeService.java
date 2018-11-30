@@ -88,6 +88,7 @@ public class QrCodeService {
                 result.put("queryNo", respMap.get("065"));
                 result.put("qrCode", respMap.get("066"));
                 result.put("timeout", respMap.get("067"));
+                result.put("channel", channel);
             } else {
                 logger.warn("获取付款码失败,返回码是[{}],提示信息是[{}]", respMap.get("039"), respMap.get("040"));
             }
