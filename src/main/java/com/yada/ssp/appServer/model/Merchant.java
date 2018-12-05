@@ -11,7 +11,8 @@ public class Merchant {
     @Column(name = "MERCHANT_ID", nullable = false)
     private String merNo;
 
-    @Column(name = "MER_NAME_CHN")
+    // 使用英文简称
+    @Column(name = "MER_NAME_ENG_ABBR")
     private String merName;
 
     @Column(name = "MERCHANT_TYPE")
