@@ -9,4 +9,6 @@ import java.util.List;
 public interface TranInfoDao extends JpaRepository<TranInfo, String>, CrudRepository<TranInfo, String> {
 
     List<TranInfo> findByMerNoAndTranDateLike(String merNo, String tranDate);
+
+    List<TranInfo> findByMerNoAndTermNoAndTranDateLike(String merNo, String termNo, String tranDate);
 }

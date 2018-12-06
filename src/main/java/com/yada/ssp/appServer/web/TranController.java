@@ -78,4 +78,19 @@ public class TranController {
         logger.warn("商户[{}]的[{}]用户请求交易信息错误,商户[{}]不是子商户", id[0], id[1], merNo);
         return null;
     }
+
+    /**
+     * 商户终端交易列表查询
+     *
+     * @param token    授权信息
+     * @param termNo   查询交易的终端号
+     * @param tranDate 查询交易的交易日期
+     * @return 交易列表信息
+     */
+    @GetMapping(value = "/term/{termNo}")
+    public List<TranInfo> subList(OAuth2Authentication token, @PathVariable("termNo") String termNo, @RequestParam String tranDate) {
+        String[] id = token.getOAuth2Request().getClientId().split("@");
+        logger.info("商户[{}]的[{}]用户请求交易列表,交易查询的终端号是[{}]、交易日期是[{}]", id[0], id[1], termNo, tranDate);
+        return tranInfoService.getList(id[0], termNo, tranDate);
+    }
 }
