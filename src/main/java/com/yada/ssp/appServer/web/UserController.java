@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -50,7 +51,7 @@ public class UserController {
      * @return 修改是否成功
      */
     @PutMapping(value = "/updatePwd")
-    public boolean updatePwd(OAuth2Authentication token, @NotEmpty String oldPwd, @NotEmpty String newPwd) {
+    public boolean updatePwd(OAuth2Authentication token, @NotEmpty String oldPwd, @NotEmpty @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,32}$") String newPwd) {
         String[] id = token.getOAuth2Request().getClientId().split("@");
         logger.info("商户[{}]的[{}]用户请求修改密码", id[0], id[1]);
         return userInfoService.updatePwd(new UserInfoPK(id[0], id[1]), oldPwd, newPwd);
@@ -88,4 +89,6 @@ public class UserController {
         deviceService.delete(new UserInfoPK(id[0], id[1]));
         return true;
     }
+
+
 }
