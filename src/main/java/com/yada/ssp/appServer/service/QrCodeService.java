@@ -42,7 +42,7 @@ public class QrCodeService {
     public Map<String, String> getQrCode(String amt, String channel, UserInfoPK id) {
         UserInfo userInfo = userInfoService.getUserInfo(id);
         // 商户交易号最大长度是64位,0000 + YYYYMMDDHHmmss + 唯一标识
-        String merTraceNo = "0000" + DateUtil.getCurDateTime() + ((Math.random() * 9 + 1) * 1000);
+        String merTraceNo = "0000" + DateUtil.getCurDateTime() + (int) ((Math.random() * 9 + 1) * 1000);
         // 交易类型 动态二维码请求-01、交易渠道 目前默认填01
         return getQrCode("01", amt, userInfo.getCcyType().getCcyType(),
                 userInfo.getTermNo(), userInfo.getMerNo(), merTraceNo, channel);
