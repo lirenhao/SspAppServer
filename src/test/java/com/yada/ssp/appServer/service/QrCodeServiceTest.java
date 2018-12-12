@@ -38,13 +38,13 @@ public class QrCodeServiceTest {
                 .thenThrow(new IOException("Mock IOException"));
 
         Map<String, String> result1 = qrCodeService.getQrCode("01", "100",
-                "20181009095533001", "156", "78945612", "100000000000666", "01");
+                "156", "78945612", "100000000000666", "20181009095533001", "01");
         assertEquals(2, result1.size());
         assertEquals("30", result1.get("respCode"));
         assertEquals("MessageFormat", result1.get("respMsg"));
 
         Map<String, String> result2 = qrCodeService.getQrCode("01", "100",
-                "20181009095533001", "156", "78945612", "100000000000666", "01");
+                "156", "78945612", "100000000000666", "20181009095533001", "01");
         assertEquals(8, result2.size());
         assertEquals("00", result2.get("respCode"));
         assertEquals("Approved", result2.get("respMsg"));
@@ -56,7 +56,7 @@ public class QrCodeServiceTest {
         assertEquals("01", result2.get("channel"));
 
         Map<String, String> result3 = qrCodeService.getQrCode("01", "100",
-                "20181009095533001", "156", "78945612", "100000000000666", "01");
+                 "156", "78945612", "100000000000666", "20181009095533001", "01");
         assertEquals(0, result3.size());
     }
 
@@ -73,7 +73,7 @@ public class QrCodeServiceTest {
         Mockito.when(queryStatusProperties.getWaiting()).thenReturn(Collections.singletonList("01"));
         Mockito.when(queryStatusProperties.getFailed()).thenReturn(Collections.singletonList("02"));
 
-        Map<String, String> result1 = qrCodeService.queryResult("02", "20181009095533002",
+        Map<String, String> result1 = qrCodeService.queryResult("02",
                 "78945612", "100000000000666", "20180927173152000000005065");
         assertEquals(5, result1.size());
         assertEquals("success", result1.get("respCode"));
@@ -82,24 +82,24 @@ public class QrCodeServiceTest {
         assertEquals("156", result1.get("tranCry"));
         assertEquals("20181009182043000000007023", result1.get("tranNo"));
 
-        Map<String, String> result2 = qrCodeService.queryResult("02", "20181009095533002",
+        Map<String, String> result2 = qrCodeService.queryResult("02",
                 "78945612", "100000000000666", "20180927173152000000005065");
         assertEquals(2, result2.size());
         assertEquals("waiting", result2.get("respCode"));
         assertEquals("waiting", result2.get("respMsg"));
 
-        Map<String, String> result3 = qrCodeService.queryResult("02", "20181009095533002",
+        Map<String, String> result3 = qrCodeService.queryResult("02",
                 "78945612", "100000000000666", "20180927173152000000005065");
         assertEquals(2, result3.size());
         assertEquals("failed", result3.get("respCode"));
         assertEquals("failed", result3.get("respMsg"));
 
-        Map<String, String> result4 = qrCodeService.queryResult("02", "20181009095533002",
+        Map<String, String> result4 = qrCodeService.queryResult("02",
                 "78945612", "100000000000666", "20180927173152000000005065");
         assertEquals(1, result4.size());
         assertEquals("unknown", result4.get("respMsg"));
 
-        Map<String, String> result5 = qrCodeService.queryResult("02", "20181009095533002",
+        Map<String, String> result5 = qrCodeService.queryResult("02",
                 "78945612", "100000000000666", "20180927173152000000005065");
         assertEquals(0, result5.size());
     }
