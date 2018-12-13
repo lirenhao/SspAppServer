@@ -1,5 +1,6 @@
 package com.yada.ssp.appServer.web;
 
+import com.yada.ssp.appServer.model.UserInfoPK;
 import com.yada.ssp.appServer.service.RefundService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Map;
 
 @RestController
@@ -30,10 +31,10 @@ public class RefundController {
 
     @PostMapping
     public Map<String, String> index(OAuth2Authentication token,
-                                     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,32}$", message = "Format Error")
-                                     @NotEmpty String pwd) {
+                                     @NotEmpty String amt, @NotEmpty String bankLsNo,
+                                     @Size(min = 6, max = 32) @NotEmpty String pwd) {
         String[] id = token.getOAuth2Request().getClientId().split("@");
         logger.info("商户[{}]的[{}]用户请求退货", id[0], id[1]);
-        return refundService.refund(id[0], pwd);
+        return refundService.refund(amt, bankLsNo, pwd, new UserInfoPK(id[0], id[1]));
     }
 }
