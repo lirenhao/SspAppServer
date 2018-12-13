@@ -29,7 +29,7 @@ public class UserInfoService {
      * @return 用户信息
      */
     public UserInfo getUserInfo(UserInfoPK id) {
-        return userInfoDao.findById(id).orElse(null);
+        return userInfoDao.findById(id).orElse(new UserInfo());
     }
 
     /**

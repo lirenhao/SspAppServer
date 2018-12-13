@@ -75,8 +75,10 @@ public class UserController {
     public UserInfo bindPush(OAuth2Authentication token, @NotEmpty String pushType, @NotEmpty String deviceNo, @NotEmpty String platform) {
         String[] id = token.getOAuth2Request().getClientId().split("@");
         logger.info("商户[{}]的[{}]用户请求绑定推送", id[0], id[1]);
-        if (deviceService.saveAndUpdate(id[0], id[1], pushType, deviceNo, platform) != null) {
-            return userInfoService.getUserInfo(new UserInfoPK(id[0], id[1]));
+        UserInfo userInfo = userInfoService.getUserInfo(new UserInfoPK(id[0], id[1]));
+        String pushFlag = userInfo.getRoles().contains("admin") ? "1": "0";
+        if (deviceService.saveAndUpdate(id[0], id[1], userInfo.getTermNo(), pushType, deviceNo, platform, pushFlag) != null) {
+            return userInfo;
         }
         logger.warn("商户[{}]的[{}]用户请求绑定推送失败", id[0], id[1]);
         return null;

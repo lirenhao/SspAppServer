@@ -22,13 +22,16 @@ public class DeviceService {
         this.deviceDao = deviceDao;
     }
 
-    public Device saveAndUpdate(String merNo, String loginName, String pushType, String deviceNo, String platform) {
+    public Device saveAndUpdate(String merNo, String loginName, String termNo,
+                                String pushType, String deviceNo, String platform, String pushFlag) {
         Device device = new Device();
         device.setMerNo(merNo);
         device.setLoginName(loginName);
+        device.setTermNo(termNo);
         device.setDeviceNo(deviceNo);
         device.setPushType(pushType);
         device.setPlatform(platform);
+        device.setPushFlag(pushFlag);
         return deviceDao.saveAndFlush(device);
     }
 
