@@ -12,10 +12,9 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -118,7 +117,7 @@ public class UserController {
      * @param pwd   退货密码
      */
     @PostMapping(value = "/refund")
-    public boolean openRefund(OAuth2Authentication token, @Min(6) @Max(32) @NotEmpty String pwd) {
+    public boolean openRefund(OAuth2Authentication token, @Size(min = 6, max = 32) @NotEmpty String pwd) {
         String[] id = token.getOAuth2Request().getClientId().split("@");
         logger.info("商户[{}]的[{}]用户请求开启退货", id[0], id[1]);
         return refundService.open(id[0], pwd) != null;
