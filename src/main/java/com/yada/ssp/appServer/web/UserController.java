@@ -12,6 +12,8 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
@@ -76,7 +78,7 @@ public class UserController {
         String[] id = token.getOAuth2Request().getClientId().split("@");
         logger.info("商户[{}]的[{}]用户请求绑定推送", id[0], id[1]);
         UserInfo userInfo = userInfoService.getUserInfo(new UserInfoPK(id[0], id[1]));
-        String pushFlag = userInfo.getRoles().contains("admin") ? "1": "0";
+        String pushFlag = userInfo.getRoles().contains("admin") ? "1" : "0";
         if (deviceService.saveAndUpdate(id[0], id[1], userInfo.getTermNo(), pushType, deviceNo, platform, pushFlag) != null) {
             return userInfo;
         }
@@ -116,9 +118,7 @@ public class UserController {
      * @param pwd   退货密码
      */
     @PostMapping(value = "/refund")
-    public boolean openRefund(OAuth2Authentication token,
-                              @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,32}$", message = "Format Error")
-                              @NotEmpty String pwd) {
+    public boolean openRefund(OAuth2Authentication token, @Min(6) @Max(32) @NotEmpty String pwd) {
         String[] id = token.getOAuth2Request().getClientId().split("@");
         logger.info("商户[{}]的[{}]用户请求开启退货", id[0], id[1]);
         return refundService.open(id[0], pwd) != null;
