@@ -26,12 +26,12 @@ public class TranInfoService {
     @Cacheable(value = "trans", unless = "#result.size() == 0",
             condition = "#tranDate ne T(com.yada.ssp.appServer.util.DateUtil).getCurDate()")
     public List<TranInfo> getList(String merNo, String tranDate) {
-        return tranInfoDao.findByMerNoAndTranDate(merNo, tranDate);
+        return tranInfoDao.findByMerNo(merNo, tranDate);
     }
 
     @Cacheable(value = "subTrans", unless = "#result.size() == 0",
             condition = "#tranDate ne T(com.yada.ssp.appServer.util.DateUtil).getCurDate()")
     public List<TranInfo> getList(String merNo, String termNo, String tranDate) {
-        return tranInfoDao.findByMerNoAndTermNoAndTranDate(merNo, termNo, tranDate);
+        return tranInfoDao.findByMerNoAndTermNo(merNo, termNo, tranDate);
     }
 }

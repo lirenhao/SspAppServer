@@ -31,6 +31,8 @@ public class TranInfo {
     @Column
     private String channel; // 交易渠道
     @Column
+    private String tranFlag; // 交易标志 0-正常交易 1-已撤销 2-已经确认 3-已经确认 4-已调整 5-退货处理中
+    @Column
     private String bankLsNo; // 银行流水号
     @Column
     private String merTraceNo; // 商户交易订单号
@@ -38,6 +40,8 @@ public class TranInfo {
     private String batchNo; // 批次号
     @Column
     private String rrn; // 参考号
+    @Column
+    private String debcreFlag; // 借贷记标识 1-加 2-减
 
     public String getTraceNo() {
         return traceNo;
@@ -119,6 +123,14 @@ public class TranInfo {
         this.channel = channel;
     }
 
+    public String getTranFlag() {
+        return tranFlag;
+    }
+
+    public void setTranFlag(String tranFlag) {
+        this.tranFlag = tranFlag;
+    }
+
     public String getBankLsNo() {
         return bankLsNo;
     }
@@ -149,5 +161,13 @@ public class TranInfo {
 
     public void setRrn(String rrn) {
         this.rrn = rrn;
+    }
+
+    public String getDebcreFlag() {
+        return debcreFlag;
+    }
+
+    public void setDebcreFlag(String debcreFlag) {
+        this.debcreFlag = debcreFlag;
     }
 }
