@@ -62,18 +62,18 @@ public class TranController {
     /**
      * 商户交易信息查询
      *
-     * @param token   授权信息
-     * @param merNo   查询交易的所属商户号
-     * @param traceNo 交易流水号
+     * @param token 授权信息
+     * @param merNo 查询交易的所属商户号
+     * @param lsId  交易流水号
      * @return 交易信息
      */
-    @GetMapping(value = "/{merNo}/{traceNo}")
-    public TranInfo info(OAuth2Authentication token, @PathVariable("merNo") String merNo, @PathVariable("traceNo") String traceNo) {
+    @GetMapping(value = "/{merNo}/{lsId}")
+    public TranInfo info(OAuth2Authentication token, @PathVariable("merNo") String merNo, @PathVariable("lsId") String lsId) {
         String[] id = token.getOAuth2Request().getClientId().split("@");
-        logger.info("商户[{}]的[{}]用户请求交易信息,交易信息的商户号是[{}]、流水号是[{}]", id[0], id[1], merNo, traceNo);
+        logger.info("商户[{}]的[{}]用户请求交易信息,交易信息的商户号是[{}]、流水号是[{}]", id[0], id[1], merNo, lsId);
         String pMerNo = id[0];
         if (merchantService.checkSubMer(pMerNo, merNo)) {
-            return tranInfoService.getInfo(traceNo);
+            return tranInfoService.getInfo(lsId);
         }
         logger.warn("商户[{}]的[{}]用户请求交易信息错误,商户[{}]不是子商户", id[0], id[1], merNo);
         return null;

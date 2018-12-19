@@ -10,6 +10,9 @@ import javax.persistence.Table;
 public class TranInfo {
 
     @Id
+    @Column(name = "BANK_LS_NO")
+    private String lsId; // 银行流水号
+
     @Column(name = "CHANNEL_TRACE_NO")
     private String traceNo; // 渠道交易流水号
     @Column
@@ -33,8 +36,6 @@ public class TranInfo {
     @Column
     private String tranFlag; // 交易标志 0-正常交易 1-已撤销 2-已经确认 3-已经确认 4-已调整 5-退货处理中
     @Column
-    private String bankLsNo; // 银行流水号
-    @Column
     private String merTraceNo; // 商户交易订单号
     @Column
     private String batchNo; // 批次号
@@ -42,6 +43,14 @@ public class TranInfo {
     private String rrn; // 参考号
     @Column
     private String debcreFlag; // 借贷记标识 1-加 2-减
+
+    public String getLsId() {
+        return lsId;
+    }
+
+    public void setLsId(String lsId) {
+        this.lsId = lsId;
+    }
 
     public String getTraceNo() {
         return traceNo;
@@ -129,14 +138,6 @@ public class TranInfo {
 
     public void setTranFlag(String tranFlag) {
         this.tranFlag = tranFlag;
-    }
-
-    public String getBankLsNo() {
-        return bankLsNo;
-    }
-
-    public void setBankLsNo(String bankLsNo) {
-        this.bankLsNo = bankLsNo;
     }
 
     public String getMerTraceNo() {
