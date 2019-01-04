@@ -1,0 +1,3 @@
+insert into T_B_MERCHANT_BASE_GAS (MERCHANT_ID, MER_NAME_ENG_ABBR, MERCHANT_TYPE, MER_LEV) values ('123456789012345', 'Test Merchant', '0', '0');
+insert into T_D_CCY_TYPE (ccy_type, ccy_name, ccy_ename, ccy_symbol) values ('702', '新加坡元', 'SGD', 'S$');
+insert into T_B_APP_USER (mer_no, login_name, user_name, pass_word, roles, term_no, ccy_type) values ('123456789012345', 'test', 'TestUser', '96E79218965EB72C92A549DD5A330112', 'admin,tran,user', '12345678', '702');
