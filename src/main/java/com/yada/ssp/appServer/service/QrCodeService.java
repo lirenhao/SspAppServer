@@ -130,6 +130,7 @@ public class QrCodeService {
                 result.put("tranAmt", AmountUtil.parseToYuan(respMap.get("004")));
                 result.put("tranCry", respMap.get("018"));
                 result.put("tranNo", respMap.get("068"));
+                result.put("lsId", respMap.get("065"));
             } else if (queryStatusProperties.getWaiting().contains(respMap.get("039"))) {
                 result.put("respCode", "waiting");
             } else if (queryStatusProperties.getFailed().contains(respMap.get("039"))) {

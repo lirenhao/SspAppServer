@@ -75,7 +75,7 @@ public class QrCodeServiceTest {
 
         Map<String, String> result1 = qrCodeService.queryResult("02",
                 "78945612", "100000000000666", "20180927173152000000005065");
-        assertEquals(5, result1.size());
+        assertEquals(6, result1.size());
         assertEquals("success", result1.get("respCode"));
         assertEquals("Approved", result1.get("respMsg"));
         assertEquals("1.01", result1.get("tranAmt"));
